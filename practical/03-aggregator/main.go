@@ -72,11 +72,11 @@ func newsAggHandler(w http.ResponseWriter, r *http.Request) {
 	queue := make(chan News, 500)
 	for _, Location := range s.Locations {
 		wg.Add(1)
-		go newsRoutine(queue, Location)
+		go newsRoutine(queue, Location) // pipe this into the queue of channels
 	}
 
-	wg.Wait()
-	close(queue)
+	wg.Wait()    // wait until the WaitGroup is done
+	close(queue) // close all the channels
 	for elem := range queue {
 		for idx := range elem.Keywords {
 			newsMap[elem.Titles[idx]] = NewsMap{elem.Keywords[idx], elem.Locations[idx]}
