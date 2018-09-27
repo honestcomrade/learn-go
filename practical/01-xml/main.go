@@ -7,11 +7,13 @@ import (
 	"net/http"
 )
 
+// SitemapIndex ...
 // create a type that we will dump the result of xml.Unmarshal into
 type SitemapIndex struct {
 	Locations []Location `xml:"sitemap"`
 }
 
+// Location ...
 // create a type that will hold each loc tag that we parse
 type Location struct {
 	Loc string `xml:"loc"`
