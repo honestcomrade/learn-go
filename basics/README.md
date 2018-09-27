@@ -5,3 +5,5 @@
 
 
 Some of these excercises were pulled from [Grayson Koonce's 'Fizzbuzz with goroutines'](https://graysonkoonce.com/fizzbuzz-in-golang/)
+
+Others pulled from [Nic Raboy's Blog The PloyGlot Developer] (https://www.thepolyglotdeveloper.com/)
