@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+    </head>
+    <body>
+
+        
+        {{ range . }}
+                {{ .Name }}: {{ .StartTime }} - {{ .EndTime }}
+                {{ range .Options }}
+                    {{ if .Special}}    Special!
+                    {{ end }}
+                    {{ .Name }}
+                        {{ .Description }}
+                        {{ .Price }}
+                {{ end }}
+        {{ end }}
+
+
+    </body>
+</html>

@@ -1,0 +1,1 @@
+### Solving Excersices from [Gayle Mcdowell's 'Cracking the Coding Interview'](http://www.crackingthecodinginterview.com/) using Golang.
