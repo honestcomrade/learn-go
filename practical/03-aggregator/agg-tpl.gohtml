@@ -1,6 +1,23 @@
+<head>
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+  </script>
+  <link 
+    rel="stylesheet" 
+    type="text/css"
+    href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"
+  ></script>
+</head>
+
 <h1>{{ .Title }}</h1>
 
-<table>
+<table id="fancytable" class="display">
   <thead>
     <th>Title</th>
     <th>Keywords</th>
@@ -14,3 +31,9 @@
     {{ end }}
   </tbody>
 </table>
+
+<script>
+  $(document).ready(() => {
+    $('#fancytable').DataTable();
+  });
+</script>
