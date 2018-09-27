@@ -6,7 +6,10 @@ import (
 	"html/template"
 	"io/ioutil"
 	"net/http"
+	"sync"
 )
+
+var wg sync.WaitGroup
 
 // SitemapIndex ...
 type SitemapIndex struct {
@@ -32,11 +35,10 @@ type NewsAggPage struct {
 	News  map[string]NewsMap
 }
 
-func newsAggHandler(w http.ResponseWriter, r *http.Request) {
-	var s SitemapIndex
+func newsRoutine(c chan News, Location string) {
+	defer wg.Done()
 	var n News
-	newsMap := make(map[string]NewsMap)
-	res, err := http.Get("https://www.washingtonpost.com/news-sitemap-index.xml")
+	res, err := http.Get(Location)
 	if err != nil {
 		panic("Err with get")
 	}
@@ -44,24 +46,46 @@ func newsAggHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("Err with reading bytes")
 	}
+	xml.Unmarshal(bytes, &n)
+	res.Body.Close()
+
+	c <- n
+}
+
+func newsAggHandler(w http.ResponseWriter, r *http.Request) {
+
+	var s SitemapIndex
+
+	res, err := http.Get("https://www.washingtonpost.com/news-sitemap-index.xml")
+	if err != nil {
+		panic("Err with get")
+	}
+
+	bytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic("Err with reading bytes")
+	}
+
 	xml.Unmarshal(bytes, &s)
+	newsMap := make(map[string]NewsMap)
+	res.Body.Close()
+	queue := make(chan News, 500)
 	for _, Location := range s.Locations {
-		res, err := http.Get(Location)
-		if err != nil {
-			panic("Err with get")
-		}
-		bytes, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			panic("Err with reading bytes")
-		}
-		xml.Unmarshal(bytes, &n)
-		for idx := range n.Titles {
-			newsMap[n.Titles[idx]] = NewsMap{n.Keywords[idx], n.Locations[idx]}
+		wg.Add(1)
+		go newsRoutine(queue, Location)
+	}
+
+	wg.Wait()
+	close(queue)
+	for elem := range queue {
+		for idx := range elem.Keywords {
+			newsMap[elem.Titles[idx]] = NewsMap{elem.Keywords[idx], elem.Locations[idx]}
 		}
 	}
+
 	p := NewsAggPage{Title: "Example News Aggregator", News: newsMap}
 	t, _ := template.ParseFiles("agg-tpl.gohtml")
-	fmt.Println(t.Execute(w, p))
+	t.Execute(w, p)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
