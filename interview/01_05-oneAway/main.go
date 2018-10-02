@@ -39,7 +39,7 @@ func OneAway(s []string) bool {
 	x := s[0]
 	y := s[1]
 	// if the difference in char length between x and y is greater than 1
-	// no way they can be one char away, return early
+	// no way they can be one char away, return false early(short circuit)
 	if len(x)-len(y) < -1 || len(x)-len(y) > 1 {
 		return false
 	}
@@ -55,11 +55,13 @@ func OneAway(s []string) bool {
 
 	for _, v := range y {
 		yChars[v]++
+		// if a char in y is not present in x, tick up the counter
 		if xChars[v] == 0 {
 			diffCount++
 		}
 	}
 
+	// if that counter got higher than 1, return false
 	if diffCount > 1 {
 		return false
 	}

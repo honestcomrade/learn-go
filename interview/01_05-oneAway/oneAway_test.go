@@ -9,10 +9,12 @@ func TestOneAway(t *testing.T) {
 		str []string
 		out bool
 	}{
-		{str: []string{"pale", "ple"}, out: true},
-		{str: []string{"pales", "pale"}, out: true},
-		{str: []string{"pale", "pole"}, out: true},
-		{str: []string{"pale", "bake"}, out: false},
+		{[]string{"a", " "}, true},
+		{[]string{"bb", "aa"}, false},
+		{[]string{"pale", "ple"}, true},
+		{[]string{"pales", "pale"}, true},
+		{[]string{"pale", "pole"}, true},
+		{[]string{"pale", "bake"}, false},
 	}
 
 	for _, table := range tables {
