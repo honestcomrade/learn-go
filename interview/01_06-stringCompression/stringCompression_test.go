@@ -6,7 +6,7 @@ func TestStringCompression(t *testing.T) {
 
 	tables := []struct {
 		in  string // the string to test against
-		out string // the result if it is palindrome or not
+		out string // the result of the compression
 	}{}
 
 	for _, table := range tables {
