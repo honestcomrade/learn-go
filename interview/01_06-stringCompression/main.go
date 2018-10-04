@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // StringCompression ...
 // @param input string
@@ -51,6 +49,5 @@ func StringCompression(x string) string {
 }
 
 func main() {
-	str := StringCompression("aaaabbaaa")
-	fmt.Println(str)
+	fmt.Println(StringCompression("aaaabbaaa"))
 }
