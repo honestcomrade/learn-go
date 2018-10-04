@@ -14,9 +14,8 @@ import "fmt"
 // assume the string has only lower case (a-z)
 func StringCompression(x string) string {
 	replaceCount := 0
-	chars := []rune(x) // format the input string into a slice of bytes
-	var retStr []rune  //  make an output slice of bytes to return (as a string later)
-	// retStr = append(retStr, chars[0])
+	chars := []rune(x) // format the input string into a slice of runes
+	var retStr []rune  //  make an output slice of runes to return (as a string later)
 	for i := 0; i < len(chars); i++ {
 		// early return for if we ever make a string
 		// that would be longer than the input
@@ -35,7 +34,7 @@ func StringCompression(x string) string {
 			replaceCount++
 			// special case for last char always need to insert replaceCount
 			if i == len(chars)-1 {
-				retStr = append(retStr, rune(replaceCount+1)+'0') // convert the int to it's ascii equiv
+				retStr = append(retStr, rune(replaceCount+1)+'0') // convert the replaceCount int to it's ascii equiv rune
 			}
 		} else {
 			// otherwise since we are onto a new char we need to append
