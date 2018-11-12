@@ -7,35 +7,49 @@ import (
 
 // Item is the basic item we want to push to the linked list
 type Item struct {
-	Name     string
-	Category string
-	ID       int
+	number int
 }
 
 // RemoveDupes ...
 // write an algorithm to remove dupes from an unsorted singly linked list
 func RemoveDupes(l *list.List) {
-	for i := l.Back(); i != nil; i = i.Prev() {
-		for j := i; j != nil; j = j.Prev() {
-			if i.Value == j.Value {
-				l.Remove(j)
-			}
+	// create a map of [Item]bool pairs
+	// for each item seen
+	nodes := make(map[interface{}]bool)
+	// loop through the list
+	for p := l.Back(); p != nil; p = p.Prev() {
+		// otherwise mark as seen
+		nodes[p.Value] = true
+	}
+
+	for p := l.Back(); p != nil; p = p.Prev() {
+		if nodes[p.Value] {
+			nodes[p.Value] = false
+		} else {
+			l.Remove(p)
+			fmt.Println("Removing dupe", p.Value)
 		}
 	}
 }
 
 // PrintList is just for printing the items in the list
 func PrintList(l *list.List) {
-	for temp := l.Back(); temp != nil; temp = temp.Prev() {
-		fmt.Println(temp.Value)
+	for p := l.Back(); p != nil; p = p.Prev() {
+		fmt.Println(p.Value)
 	}
 }
 
 func main() {
 	items := list.New()
-	items.PushBack(Item{"Joel", "Person", 1234})
-	items.PushBack(Item{"Joel", "Person", 1234})
+	items.PushBack(Item{1})
+	items.PushBack(Item{1})
+	items.PushBack(Item{1})
+	items.PushBack(Item{4})
+	items.PushBack(Item{5})
+	items.PushBack(Item{1})
+	fmt.Print("Items before removal:\n")
 	PrintList(items)
 	RemoveDupes(items)
+	fmt.Print("After Removal:\n")
 	PrintList(items)
 }

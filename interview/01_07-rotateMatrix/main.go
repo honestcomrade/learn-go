@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // RotateMatrix ...
 // Given an image represented by an NxN matrix, where each pixel in the image is 4 bytes,
